@@ -19,24 +19,10 @@ void	print_2(char **c)
 	i++;
 	}
 }
-/*
-size_t strlen_st(void *v)
-{
-	int	i;
-
-	i = 0;
-	while (v[i] != 0)
-	{
-		i++;
-	}
-	return(i);
-}
-*/
 
 int parent(char **argv)
 {
 	int fd1;
-///	void *file;
 	ssize_t nb_read;
 
 	printf("file 2 = %s\n", argv[4]);
@@ -67,18 +53,30 @@ int child(char **argv)
 	printf("le contenu de file est : %s", get_next_line(fd));
 	printf("le contenu de file est : %s", get_next_line(fd));
 
-	printf("je dois appliquer la commande 1");
-
-	je renvoie dans un fichier tampo
 
 
-	close(fd1);
+
+
+
+
+	printf("je dois appliquer la commande 1\n\n");
+
+///	je renvoie dans un fichier tampo
+
+
+	close(fd);
 	return (0);
+}
+
+void error(void)
+{
+	exit(EXIT_FAILURE);
 }
 
 int main(int argc, char **argv, char **env)
 {
-	int	pid;
+	pid_t	pid;
+	int		pipe_fd[2];
 
 	int * stat_loc;
 
@@ -88,16 +86,35 @@ int main(int argc, char **argv, char **env)
 //	write(1, "\nenv = ", 7);
 //	print_2(env);
 //	printf("\n\n");
+	if (argc != 5)
+	{
+		printf("erreur, argc = %d\n", pid);
+		error();
+	}
+
+	if (pipe(pipe_fd) == -1)
+	{
+		printf("erreur, pipe = %d\n", pid);
+		error();
+	}
+	printf("pipe[0] = %d et pipe[1] = %d\n", pipe_fd[0], pipe_fd[1]);
+
 
 	pid = fork();
 	if (pid == -1)
+	{
 		printf("erreur, pid = %d\n", pid);
-	else if (pid != 0)
+		error();
+	}
+	else if (pid != 0) //pere
 	{
 		printf("ja suis le pere, mon fils est au %d\n", pid);
+		printf("ja suis le pere, j ecrit un message dans le pipe[0]\n");
+		close(pipe_fd[0]);
+		write (pipe_fd[1], "message secret\0", 15);
 
 		waitpid(pid, stat_loc, 0);
-		printf("ja suis le pere, jái attendu la fin du fils\n");
+		printf("\nja suis le pere, j'ai attendu la fin du fils\n");
 		parent(argv);
 
 	}
@@ -105,8 +122,17 @@ int main(int argc, char **argv, char **env)
 	{
 		sleep(1);
 		printf("\nje suis le fils, pid = %d\n", pid);
+		printf("\nje suis le fils,");
+		close(pipe_fd[1]);
 
-		child(argv);
+		char buf[15];
+		int r;
+		r = read(pipe_fd[0], buf, 15);
+		if (r == -1)
+			printf("pb read fils\n");
+		printf(" message = %s", buf);
+
+//		child(argv);
 
 	}
 
