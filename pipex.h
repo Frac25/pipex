@@ -9,4 +9,7 @@
 
 #include "get_next_line.h"
 
+char	**ft_split(char const *s, char c);
+char	**get_path(char **env);
+
 #endif

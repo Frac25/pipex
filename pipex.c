@@ -1,5 +1,59 @@
 #include "pipex.h"
 
+int	len(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin3(char const *s1, char const *s2)
+{
+	char		*c;
+	size_t		i;
+	size_t		j;
+
+	if (s1 && s2)
+	{
+		c = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+		if (c == NULL)
+			return (NULL);
+		i = 0;
+		while (i < ft_strlen(s1))
+		{
+			c[i] = s1[i];
+			i++;
+		}
+		j = 0;
+		while (j < ft_strlen(s2))
+			c[i++] = s2[j++];
+		c[i] = '\0';
+		return (c);
+	}
+	return (NULL);
+}
+
+char	*ft_strdup2(const char *s1)
+{
+	int		i;
+	char	*c;
+
+	c = malloc(sizeof(char) * ft_strlen(s1) + 1);
+	if (c == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		c[i] = s1[i];
+		i++;
+	}
+	c[i] = '\0';
+	return (c);
+}
+
 void	print_2(char **c)
 {
 	int	i;
@@ -14,7 +68,7 @@ void	print_2(char **c)
 			j++;
 		}
 		write(1, c[i], j);
-		write(1, " ", 1);
+		write(1, "\n", 1);
 
 	i++;
 	}
@@ -23,7 +77,7 @@ void	print_2(char **c)
 int parent(char **argv)
 {
 	int fd1;
-	ssize_t nb_read;
+//	ssize_t nb_read;
 
 	printf("file 2 = %s\n", argv[4]);
 	printf("commande 2  = %s\n", argv[3]);
@@ -32,15 +86,18 @@ int parent(char **argv)
 	if ( fd1 == -1)
 		printf("erreur open \n");
 
+
 	close(fd1);
+
 	return (0);
 }
 
-int child(char **argv)
+int child(char **argv,int *pipe_fd, char **env)
 {
 	int fd;
 ///	void *file;
-	ssize_t nb_read;
+//	ssize_t nb_read;
+	char **path;
 
 	printf("file 1 = %s\n", argv[1]);
 	printf("commande 1  = %s\n\n", argv[2]);
@@ -53,13 +110,54 @@ int child(char **argv)
 	printf("le contenu de file est : %s", get_next_line(fd));
 	printf("le contenu de file est : %s", get_next_line(fd));
 
+//	write(1, "\nenv = \n\n", 9);
+//	print_2(env);
+//	printf("\n\n");
+
+	path = NULL;
+	path = get_path(env);
+
+	printf("path 1 = %s\n", path[0]);
+
+	printf("je dois appliquer la commande 1 !\n\n");
+
+	int ex;
+	int i;
+	char **fct; // = {"ls", NULL};
+
+//	fct = NULL;
+	fct = malloc(sizeof(char*)*100);
+	fct[0] = ft_strdup2(argv[2]);
+	fct[1] = ft_strdup2("-l");
+	fct[2] = NULL;
+	printf("fct[0] = %s\n", fct[0]);
+	printf("fct[1] = %s\n", fct[1]);
+
+
+	char *path3;
+	i = 0;
+	ex = -1;
+
+	path3 = ft_strjoin3("/usr/bin", "/ls");
+	ex = execve(path3, fct, env);
+	printf("path = %s et fct[0] = %s, et ex = %d\n", path3, fct[0],ex);
+
+	path3 = ft_strjoin3("/bin", "/ls");
+	ex = execve(path3, fct, env);
+	printf("path = %s et fct[0] = %s, et ex = %d\n", path3, fct[0],ex);
 
 
 
+	while (ex == -1 && path[i] != NULL)
+	{
+		path3 = ft_strjoin3(path[i], "/");
+		path3 = ft_strjoin3(path3, argv[2]);
 
+//		ex = execve(path3, fct, env);
+		printf("path = %s et fct[0] = %s, et ex = %d\n", path3, fct[0],ex);
+		i++;
+	}
 
-
-	printf("je dois appliquer la commande 1\n\n");
 
 ///	je renvoie dans un fichier tampo
 
@@ -80,15 +178,19 @@ int main(int argc, char **argv, char **env)
 
 	int * stat_loc;
 
+	stat_loc = NULL;
+	pid = 0;
+
 //	printf("argc = %d\n", argc);
 //	write(1, "argv = ", 7);
 //	print_2(argv);
 //	write(1, "\nenv = ", 7);
 //	print_2(env);
 //	printf("\n\n");
+//	write(1, env[0], 2);
 	if (argc != 5)
 	{
-		printf("erreur, argc = %d\n", pid);
+		printf("erreur, argc = %d\n", argc);
 		error();
 	}
 
@@ -115,10 +217,10 @@ int main(int argc, char **argv, char **env)
 
 		waitpid(pid, stat_loc, 0);
 		printf("\nja suis le pere, j'ai attendu la fin du fils\n");
-		parent(argv);
+//		parent(argv);
 
 	}
-	else
+	else //child
 	{
 		sleep(1);
 		printf("\nje suis le fils, pid = %d\n", pid);
@@ -132,11 +234,8 @@ int main(int argc, char **argv, char **env)
 			printf("pb read fils\n");
 		printf(" message = %s", buf);
 
-//		child(argv);
+		child(argv, pipe_fd, env);
 
 	}
-
-
-
 	return(0);
 }
