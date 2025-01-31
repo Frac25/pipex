@@ -9,6 +9,10 @@
 
 #include "get_next_line.h"
 
+//pipex.c
+int child(char **argv,int *pipe_fd, char **env);
+int parent(char **argv,int *pipe_fd, char **env);
+
 //lib.c
 int		len(char *s);
 char	*ft_strjoin3(char const *s1, char const *s2);

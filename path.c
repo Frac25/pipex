@@ -7,6 +7,7 @@ char	**get_path(char **env)
 	int		i;
 
 	i = 0;
+	path = NULL;
 	while (env[4][i + 5] != '\0')
 		i++;
 	path = malloc(sizeof(char*) * (i + 1));

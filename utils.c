@@ -14,10 +14,14 @@ void	print_2c(char **c)
 			j++;
 		}
 		write(1, c[i], j);
+		write(1, "/", 1);
 		write(1, "\n", 1);
 
 	i++;
 	}
+		write(1, c[i], j);
+		write(1, "/", 1);
+		write(1, "\n", 1);
 }
 
 void error(void)
