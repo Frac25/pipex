@@ -9,7 +9,6 @@ char	**get_path(char **env)
 	i = 0;
 	while (env[4][i + 5] != '\0')
 		i++;
-//	printf ("i = %d\n", i);
 	path = malloc(sizeof(char*) * (i + 1));
 	path[i + 1] = '\0';
 	while (i >= 0)
@@ -18,8 +17,6 @@ char	**get_path(char **env)
 		i--;
 	}
 	path2 = ft_split(path, ':');
-//	printf ("path : %s\n", path);
-//	i = 0;
 	while (path2[i])
 	{
 		printf("path2 : %s\n", path2[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sydubois <sydubois@student.42Lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:27:29 by sydubois          #+#    #+#             */
-/*   Updated: 2024/12/04 14:51:20 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:39:10 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ char	*ft_strjoin2(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		chr_start(char *s, char c);
 int		chr_rest(char *s, char c);
+
 
 #endif
