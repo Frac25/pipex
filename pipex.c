@@ -1,106 +1,83 @@
 #include "pipex.h"
 
-void read_infile(char **argv)
-{
-	int fd;
-
-	fd = open(argv[1], O_RDONLY);
-	if ( fd == -1)
-		printf("erreur open \n");
-	printf("le contenu de file est : %s", get_next_line(fd));
-	printf("le contenu de file est : %s", get_next_line(fd));
-	printf("le contenu de file est : %s", get_next_line(fd));
-	close(fd);
-}
-
-
-
 int main(int argc, char **argv, char **env)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
+	int		*stat_loc;
 
-	int * stat_loc;
-	stat_loc = NULL;
 	pid = 0;
+	stat_loc = NULL;
 	if (argc != 5)
-	{
-		printf("erreur, argc = %d\n", argc);
-		error();
-	}
+		error(10);
 	if (pipe(pipe_fd) == -1)
-	{
-		printf("erreur, pipe = %d\n", pid);
-		error();
-	}
+		error(11);
 	pid = fork();
 	if (pid == -1)
-	{
-		printf("erreur, pid = %d\n", pid);
-		error();
-	}
+		error(12);
 	else if (pid != 0) //parent
 	{
-		printf("je suis le pere, mon fils est au %d\n", pid);
-		printf("\nja suis le pere, j'attends le fils\n");
+		printf("je suis le pere, mon fils est au %d, j'attends qu'il termine\n", pid);
 		waitpid(pid, stat_loc, 0);
-		printf("\nja suis le pere, j'ai attendu la fin du fils\n");
+		sleep(2);
+		printf("\nje suis le pere, j'ai attendu la fin du fils\n");
 		parent(argv, pipe_fd, env);
+		return(0);
 	}
 	else //child
 		child(argv, pipe_fd, env);
 	return(0);
 }
 
-int child(char **argv,int *pipe_fd, char **env)
+void child(char **argv,int *pipe_fd, char **env)
 {
+	t_child	*p;
+	int		i;
+	int testdup;
 
-///	void *file;
-//	ssize_t nb_read;
-	char **path;
-	int ex;
-	int i;
-	char **fct; // = {"ls", "-l", NULL};
-	char *path3; // = /bin/l
+	p = malloc(sizeof(t_child*));
+	if(p == NULL)
+		error(22);
+	sleep(10);
+	ft_printf("\nje suis le fils, pid = ?, file 1 = %s, commande 1  = %s\n",  argv[1], argv[2]);
+	p->cmd = ft_split(argv[2], ' ');
+	p->fd = open(argv[1], O_RDONLY);
+	if (p->fd == -1)
+		error(20);
+	printf(" p->fd = %d\n", p->fd);
 
-	sleep(1);
-	printf("\nje suis le fils, pid = 0\n");
-	printf("file 1 = %s\n", argv[1]);
-	printf("commande 1  = %s\n\n", argv[2]);
+	sleep(10);
 
-	fct = ft_split(argv[2], ' ');
+	if(dup2(p->fd, 0) == -1)
+		error(23);
+	sleep(10);
+	printf(" pipe_fd[1] = %d\n", pipe_fd[1]);
+	testdup = dup2(pipe_fd[1], 1);
+	printf("testdup = %d", testdup);
+	sleep(10);
+//	printf("dup2(p->fd, 0) = %d\n", dup2(p->fd, 0));
+//	dup2(p->fd, 0);
 
-
-	int fd;
-	fd = open(argv[1], O_RDONLY);
-	if ( fd == -1)
-		printf("erreur open \n");
-/// je change la source de 'stdin' a 'infile'
-	dup2(fd, 0);
-///	je change la source de std out a pipe[1]
-	dup2(pipe_fd[1], 1);
-
-
-//	int fd2;
-//	fd2 = open(argv[4], O_RDONLY);
-//	if ( fd2 == -1)
-//		printf("erreur open \n");
-//	dup2(fd2, 1);
-
-	close(pipe_fd[0]);
+//	printf(" pipe_fd[1] = %d\n", pipe_fd[1]);
+//	write(1, "tes0", 4);
+//	dup2(pipe_fd[1], 1);
+//	printf("dup2(pipe_fd[1], 1) = %d\n", dup2(pipe_fd[1], 1));
+	write(1, "test\n", 5);
 	i = 0;
-	ex = -1;
-	path = get_path(env);
-	while (ex == -1 && path[i] != NULL)
+/*	printf(" pipe_fd[0] = %d\n", pipe_fd[0]);
+	close(pipe_fd[0]);
+	p->exec = -1;
+	p->all_path = get_path(env);
+
+	while (p->exec == -1 && p->all_path[i] != NULL)
 	{
-		path3 = ft_strjoin3(path[i], "/");
-		path3 = ft_strjoin3(path3, fct[0]);
-		ex = execve(path3, fct, env);
-//		printf("path = %s et fct[0] = %s, et ex = %d\n", path3, fct[0],ex);
+		p->path = ft_strjoin3(p->all_path[i], "/");
+		p->path = ft_strjoin3(p->path, p->cmd[0]);
+		p->exec = execve(p->path, p->cmd, env);
 		i++;
 	}
-	printf("a priori on ne passe pas la");
-	return (0);
+*/
+	error(21);
 }
 
 int parent(char **argv,int *pipe_fd, char **env)
@@ -108,7 +85,7 @@ int parent(char **argv,int *pipe_fd, char **env)
 	int fd;
 	char **path; // /bin    /bin/toto
 	char *path2; // /bin/wc
-	char **fct; // {wc, -l, NULL}
+	char **cmd; // {wc, -l, NULL}
 	int i;
 	int ex;
 
@@ -120,15 +97,15 @@ int parent(char **argv,int *pipe_fd, char **env)
 	dup2(fd, 1);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[1]);
-	fct = ft_split(argv[3], ' ');
+	cmd = ft_split(argv[3], ' ');
 	path = get_path(env);
 	i = 0;
 	ex = -1;
 	while(ex == -1)
 	{
 		path2 = ft_strjoin3(path[i], "/");
-		path2 = ft_strjoin3(path2, fct[0]);
-		ex = execve(path2, fct, env);
+		path2 = ft_strjoin3(path2, cmd[0]);
+		ex = execve(path2, cmd, env);
 		i++;
 	}
 	close(fd);

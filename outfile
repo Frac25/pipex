@@ -1,15 +1,1 @@
--rw-r--r--  1 sylvaindubois  staff     40 Jan 31 15:50 file3
--rw-r--r--  1 sylvaindubois  staff   1966 Jan 31 16:11 ft_split.c
--rw-r--r--  1 sylvaindubois  staff   2372 Jan 31 13:06 get_next_line.c
--rw-r--r--  1 sylvaindubois  staff   1257 Jan 31 10:39 get_next_line.h
--rw-r--r--  1 sylvaindubois  staff   2365 Jan 27 16:54 get_next_line_utils.c
--rw-r--r--  1 sylvaindubois  staff    108 Jan 31 16:47 infile
--rw-r--r--  1 sylvaindubois  staff    712 Jan 31 10:14 lib.c
--rw-r--r--  1 sylvaindubois  staff    456 Jan 31 10:35 makefile
--rw-r--r--  1 sylvaindubois  staff    196 Jan 31 16:50 outfile
--rw-r--r--  1 sylvaindubois  staff    394 Jan 31 15:20 path.c
--rwxr-xr-x  1 sylvaindubois  staff  51056 Jan 31 16:46 pipex
--rw-r--r--  1 sylvaindubois  staff   2644 Jan 31 16:46 pipex.c
--rw-r--r--  1 sylvaindubois  staff    535 Jan 31 16:15 pipex.h
--rw-r--r--  1 sylvaindubois  staff    540 Jan 27 14:59 test.txt
--rw-r--r--  1 sylvaindubois  staff    310 Jan 31 14:47 utils.c
+       2

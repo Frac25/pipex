@@ -11,6 +11,8 @@ char	**get_path(char **env)
 	while (env[4][i + 5] != '\0')
 		i++;
 	path = malloc(sizeof(char*) * (i + 1));
+	if(path == NULL)
+		error(22);
 	path[i + 1] = '\0';
 	while (i >= 0)
 	{
