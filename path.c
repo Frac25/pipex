@@ -20,11 +20,7 @@ char	**get_path(char **env)
 		i--;
 	}
 	path2 = ft_split(path, ':');
-	while (path2[i])
-	{
-		printf("path2 : %s\n", path2[i]);
-		i++;
-	}
+//	print_2c(path2);
 	free(path);
 	return(path2);
 }
