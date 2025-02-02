@@ -78,3 +78,13 @@ int	ft_atoi(const char *str)
 	}
 	return (s * a);
 }
+
+int	strlen_2(char **c)
+{
+	int	i;
+
+	i = 0;
+	while (c[i])
+		i++;
+	return (i);
+}

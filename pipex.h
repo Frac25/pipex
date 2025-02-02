@@ -11,17 +11,14 @@
 #include "get_next_line.h"
 #include "ft_printf.h"
 
-typedef struct child
+typedef struct pip
 {
 	char	**cmd;
-	int		fd;
-	int		exec;
 	char	**all_path;
-	char	*path;
-}	t_child;
+}	t_pip;
 
 //pipex.c
-void	child(char **argv,int *pipe_fd, char **env);
+void	child(char **argv,int *pipe_fd, char **env, int j);
 int		parent(char **argv,int *pipe_fd, char **env);
 
 //lib.c
@@ -29,6 +26,7 @@ int		len(char *s);
 char	*ft_strjoin3(char const *s1, char const *s2);
 char	*ft_strdup2(const char *s1);
 int		ft_atoi(const char *str);
+int		strlen_2(char **str);
 
 //utils.c
 void	print_2c(char **c);
