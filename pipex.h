@@ -21,7 +21,7 @@ typedef struct child
 }	t_child;
 
 //pipex.c
-void	child(char **argv,int *pipe_fd, char **env, int s);
+void	child(char **argv,int *pipe_fd, char **env);
 int		parent(char **argv,int *pipe_fd, char **env);
 
 //lib.c

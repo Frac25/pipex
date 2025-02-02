@@ -5,14 +5,11 @@ int main(int argc, char **argv, char **env)
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		*stat_loc;
-	int		s;
-
 
 	pid = 0;
 	stat_loc = NULL;
-	if (argc != 6)
+	if (argc != 5)
 		error(10);
-	s = ft_atoi(argv[5]);
 	if (pipe(pipe_fd) == -1)
 		error(11);
 	pid = fork();
@@ -21,18 +18,18 @@ int main(int argc, char **argv, char **env)
 	else if (pid != 0) //parent
 	{
 
-		printf("je suis le pere au %d, mon fils est au %d, j'attends qu'il termine\n", getpid(), pid);
+//		printf("je suis le pere au %d, mon fils est au %d, j'attends qu'il termine\n", getpid(), pid);
 		waitpid(pid, stat_loc, 0);
-		printf("\nje suis le pere, j'ai attendu la fin du fils\n");
+//		printf("\nje suis le pere, j'ai attendu la fin du fils\n");
 		parent(argv, pipe_fd, env);
 		return(0);
 	}
 	else //child
-		child(argv, pipe_fd, env, s);
+		child(argv, pipe_fd, env);
 	return(0);
 }
 
-void child(char **argv,int *pipe_fd, char **env, int s)
+void child(char **argv,int *pipe_fd, char **env)
 {
 	t_child	*p;
 	int		i;
@@ -43,20 +40,17 @@ void child(char **argv,int *pipe_fd, char **env, int s)
 	p = malloc(sizeof(t_child*));
 	if(p == NULL)
 		error(22);
-	sleep(1);
-	ft_printf("\nje suis le fils, pid = ?, file 1 = %s, commande 1  = %s\n",  argv[1], argv[2]);
+//	sleep(1);
+//	ft_printf("\nje suis le fils, pid = ?, file 1 = %s, commande 1  = %s\n",  argv[1], argv[2]);
 	cmd = ft_split(argv[2], ' ');
 	p->fd = open(argv[1], O_RDONLY);
 	if (p->fd == -1)
 		error(20);
-	printf("p->fd = %d\n", p->fd);
+//	printf("p->fd = %d\n", p->fd);
 	if(dup2(p->fd, 0) == -1)
 		error(23);
-	if (s == 4)
-	{
-		if(dup2(pipe_fd[1], 1) == -1)
-			error(23);
-	}
+	if(dup2(pipe_fd[1], 1) == -1)
+		error(23);
 	close(pipe_fd[0]);
 	i = 0;
 	p->exec = -1;
@@ -70,6 +64,9 @@ void child(char **argv,int *pipe_fd, char **env, int s)
 		p->exec = execve(path, cmd, env);
 		i++;
 	}
+	write(2, "zsh: command not found: ", 24);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	write(2, "\n",1);
 	error(21);
 }
 
@@ -82,8 +79,10 @@ int parent(char **argv,int *pipe_fd, char **env)
 	int i;
 	int ex;
 
-	printf("file 2 = %s\n", argv[4]);
-	printf("commande 2  = %s\n", argv[3]);
+
+	path2 = NULL;
+//	printf("file 2 = %s\n", argv[4]);
+//	printf("commande 2  = %s\n", argv[3]);
 	fd = open(argv[4], O_WRONLY | O_TRUNC);
 	if ( fd == -1)
 		printf("erreur open \n");
@@ -91,7 +90,7 @@ int parent(char **argv,int *pipe_fd, char **env)
 	path = get_path(env);
 	i = 0;
 	ex = -1;
-		dup2(fd, 1);
+//	dup2(fd, 1);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[1]);
 //	perror(get_next_line(0));
@@ -99,11 +98,15 @@ int parent(char **argv,int *pipe_fd, char **env)
 	{
 		path2 = ft_strjoin3(path[i], "/");
 		path2 = ft_strjoin3(path2, cmd[0]);
+		printf("ex = %d", ex);
 		ex = execve(path2, cmd, env);
 		i++;
 	}
-	close(fd);
-
+/*	write(2, "zsh: command not found: ", 24);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	write(2, "\n",1);
+	error(21);
+*/
 	return (0);
 }
 

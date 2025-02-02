@@ -32,7 +32,7 @@ void error(int i)
 		exit(EXIT_FAILURE);
 	else if(i == 10)
 	{
-		ft_printf("pipex file1 cmd1 cmd2 file2\n");
+	///	ft_printf("pipex file1 cmd1 cmd2 file2\n");
 		exit(EXIT_SUCCESS);
 	}
 	else if(i == 11)
@@ -59,7 +59,7 @@ void	error2(int i)
 	}
 	else if(i == 21)
 	{
-		ft_printf("pas de chemin trouvé pour la cmd\n");
+		//ft_printf("pas de chemin trouvé pour la cmd\n");
 		exit(EXIT_FAILURE);
 	}
 	else if(i == 22)
