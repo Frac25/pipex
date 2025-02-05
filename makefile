@@ -17,8 +17,7 @@ OBJ = $(addsuffix .o, $(PROG))
 
 CC = cc
 
-#CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -Werror
 
 all :		$(NAME)
 
@@ -26,6 +25,7 @@ $(NAME) :	$(OBJ)
 			$(CC) $(OBJ) -o $(NAME)
 
 %.o :		%.c
+#			$(CC) -c $< -o $@
 			$(CC) -c $< $(CFLAGS) -o $@
 
 clean :

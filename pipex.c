@@ -10,16 +10,19 @@ void exec_cmd(char **cmd, char **all_path, char **env)
 	i = 0;
 	while (exec == -1 && all_path[i] != NULL)
 	{
+//
 		path = ft_strjoin3(all_path[i], "/");
 		path = ft_strjoin3(path, cmd[0]);
+//		printf("path = %s", path);
+//		write(2, "passe\n", 6);
 //		printf("\naccess = %d\n", access(path, F_OK | X_OK));
-//		printf("path = %s\n", path);
 		exec = execve(path, cmd, env);
 		i++;
 	}
 	write(2, "zsh: command not found: ", 24);
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	write(2, "\n",1);
+	free(path);
 	error(21);
 }
 
@@ -51,7 +54,6 @@ int main(int argc, char **argv, char **env)
 	int fd_last;
 	char **all_path;
 
-
 	if (argc < 5)
 		error(10);
 	all_path = get_path(env);
@@ -62,9 +64,8 @@ int main(int argc, char **argv, char **env)
 	while(j < argc - 2)
 		pipe_j(ft_split(argv[j++], ' '), all_path, env);
 	dup2(fd_last, 1);
+	printf("argv[j] = %s\n", argv[j]);
 	exec_cmd(ft_split(argv[j], ' '), all_path, env);
 	return(0);
 }
-
-
 

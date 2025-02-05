@@ -1,26 +1,45 @@
 #include "pipex.h"
 
+
+int	search_env(char *title, char **env)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while(env[i] != NULL)
+	{
+		j = 0;
+		while(env[i][j] != '\0' && title[j] != '\0' && env[i][j] == title[j])
+		{
+			j++;
+			if(title[j] == '\0')
+				return(i);
+		}
+		i++;
+	}
+	return(-1);
+}
+
 char	**get_path(char **env)
 {
 	char	*path;
 	char	**path2;
-	int		i;
+	int		line;
 
-	i = 0;
-	path = NULL;
-	while (env[4][i + 5] != '\0')
-		i++;
-	path = malloc(sizeof(char*) * (i + 1));
-	if(path == NULL)
-		error(22);
-	path[i + 1] = '\0';
-	while (i >= 0)
-	{
-		path[i] = env[4][i + 5];
-		i--;
-	}
+
+//	path = getenv("PATH"); // interdit
+	line = search_env("PATH", env);
+	path = ft_strdup2(env[line]);
+//	printf("path = %s\n", path);
+	path2 = ft_split(path, '=');
+	free(path);
+	path = ft_strdup2(path2[1]);
+	free(path2);
+//	printf("path = %s\n", path);
 	path2 = ft_split(path, ':');
 //	print_2c(path2);
 	free(path);
 	return(path2);
 }
+

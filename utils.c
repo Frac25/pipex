@@ -14,13 +14,11 @@ void	print_2c(char **c)
 			j++;
 		}
 		write(1, c[i], j);
-		write(1, "/", 1);
 		write(1, "\n", 1);
 
 	i++;
 	}
 		write(1, c[i], j);
-		write(1, "/", 1);
 		write(1, "\n", 1);
 }
 
@@ -32,7 +30,7 @@ void error(int i)
 		exit(EXIT_FAILURE);
 	else if(i == 10)
 	{
-	///	ft_printf("pipex file1 cmd1 cmd2 file2\n");
+		ft_printf("pipex file1 cmd1 cmd2 file2\n");
 		exit(EXIT_SUCCESS);
 	}
 	else if(i == 11)
