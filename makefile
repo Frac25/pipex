@@ -5,6 +5,7 @@ PROG =	ft_printf\
 		ft_split\
 		get_next_line_utils\
 		get_next_line\
+		heredoc\
 		lib\
 		path\
 		pipex\

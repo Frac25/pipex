@@ -54,18 +54,25 @@ int main(int argc, char **argv, char **env)
 	int fd_last;
 	char **all_path;
 
+	j = 0;
 	if (argc < 5)
 		error(10);
 	all_path = get_path(env);
-	fd_first = open(argv[1], O_RDONLY);
+	if (detect_hd(argv) == 1)
+	{
+		fd_first = open("tmp_file.txt", O_RDONLY);
+		j += 1;
+	}
+	else
+		fd_first = open(argv[1], O_RDONLY);
 	fd_last = open(argv[argc -1], O_WRONLY | O_TRUNC);
 	dup2(fd_first, 0);
-	j = 2;
+	j += 2;
 	while(j < argc - 2)
 		pipe_j(ft_split(argv[j++], ' '), all_path, env);
 	dup2(fd_last, 1);
-	printf("argv[j] = %s\n", argv[j]);
 	exec_cmd(ft_split(argv[j], ' '), all_path, env);
+
 	return(0);
 }
 
