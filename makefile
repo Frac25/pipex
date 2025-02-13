@@ -42,4 +42,4 @@ a :			all clean
 valgrind :	$(NAME)
 			valgrind --leaks-check=full --show-leaks-kinds=all --track-origins=yes ./$(NAME)
 
-.PHONY :	all clean fclean re a
+.PHONY :	all clean fclean re a valgrind

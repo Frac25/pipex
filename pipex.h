@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:49:08 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 09:50:41 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:02:24 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,20 @@ int		parent(char **argv, int *pipe_fd, char **env);
 
 //lib.c
 int		len(char *s);
-char	*ft_strjoin3(char const *s1, char const *s2);
 char	*ft_strdup2(const char *s1);
 int		ft_atoi(const char *str);
 int		strlen_2(char **str);
 int		ft_same_str(char *s1, char *s2);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
+char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 
 //utils.c
 void	print_2c(char **c);
 void	error(int i);
 void	error2(int i);
-void	read_infile(char **argv);
+void	error10(int i, char *c);
+//void	read_infile(char **argv);
+void	free2(char **c);
 
 //path.c
 char	**get_path(char **env);

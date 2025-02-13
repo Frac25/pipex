@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:27:55 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 10:30:22 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:01:40 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,36 @@ void	error2(int i)
 	}
 }
 
+void	error10(int i, char *c)
+{
+	if (i == 100)
+	{
+		write(2, "zsh: no such file or directory: ", 32);
+		write(2, c, ft_strlen(c));
+		write(2, "\n", 1);
+		exit(EXIT_FAILURE);
+	}
+	else if (i == 101)
+	{
+		write(2, "zsh: command not found: ", 24);
+		write(2, c, ft_strlen(c));
+		write(2, "\n", 1);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	free2(char **c)
+{
+	int	i;
+
+	i = 0;
+	while(c[i])
+	{
+		free(c[i]);
+		i++;
+	}
+	free(c);
+}
 /*
 void	read_infile(char **argv)
 {
