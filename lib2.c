@@ -1,41 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   lib2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 09:57:28 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 10:08:55 by sydubois         ###   ########.fr       */
+/*   Created: 2025/02/13 10:22:17 by sydubois          #+#    #+#             */
+/*   Updated: 2025/02/13 10:25:30 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	detect_hd(char **argv)
+int	ft_same_str(char *s1, char *s2)
 {
-	char	*limiter;
-	int		fd;
-	char	*line;
+	int	i;
 
-	if (ft_same_str(argv[1], "here_doc") == 1)
+	i = 0;
+	while (s1[i] != '\0')
 	{
-		limiter = argv[2];
-		fd = open("tmp_file.txt", O_CREAT | O_TRUNC | O_WRONLY, 0777);
-		while (1)
-		{
-			write(1, ">", 1);
-			line = get_next_line(STDIN_FILENO);
-			if (ft_memcmp(limiter, line, 4) == 0)
-				break ;
-			else
-				write(fd, line, ft_strlen(line));
-			free(line);
-		}
-		free(line);
-		free(limiter);
-		close(fd);
-		return (1);
+		if (s1[i] != s2[i])
+			return (-1);
+		i++;
+	}
+	if (s2[i] != '\0')
+		return (-1);
+	return (1);
+}
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	const unsigned char	*c1;
+	const unsigned char	*c2;
+	size_t				i;
+
+	c1 = (const unsigned char *)s1;
+	c2 = (const unsigned char *)s2;
+	i = 0;
+	while (i < n)
+	{
+		if (c1[i] != c2[i])
+			return (c1[i] - c2[i]);
+		i++;
 	}
 	return (0);
 }

@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sydubois <sydubois@student.42Lausanne.c    +#+  +:+       +#+        */
+/*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:54:36 by sydubois          #+#    #+#             */
-/*   Updated: 2025/01/31 16:11:00 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/13 09:55:21 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "pipex.h"
 

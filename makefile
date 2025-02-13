@@ -7,6 +7,7 @@ PROG =	ft_printf\
 		get_next_line\
 		heredoc\
 		lib\
+		lib2\
 		path\
 		pipex\
 		utils\
@@ -18,7 +19,7 @@ OBJ = $(addsuffix .o, $(PROG))
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 all :		$(NAME)
 
@@ -26,7 +27,6 @@ $(NAME) :	$(OBJ)
 			$(CC) $(OBJ) -o $(NAME)
 
 %.o :		%.c
-#			$(CC) -c $< -o $@
 			$(CC) -c $< $(CFLAGS) -o $@
 
 clean :
@@ -38,5 +38,8 @@ fclean : 	clean
 re :		fclean all
 
 a :			all clean
+
+valgrind :	$(NAME)
+			valgrind --leaks-check=full --show-leaks-kinds=all --track-origins=yes ./$(NAME)
 
 .PHONY :	all clean fclean re a
