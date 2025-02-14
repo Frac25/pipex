@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:22:17 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 13:41:47 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/14 10:19:57 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,29 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	return (0);
 }
 
+int	cpy(char *c, char const *s1, int i)
+{
+	c[i] = s1[i];
+	i++;
+	return (i);
+}			
+
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 {
-	char		*c;
-	size_t		i;
-	size_t		j;
+	char	*c;
+	size_t	i;
+	size_t	j;
+	int		l;
 
+	l = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
 	if (s1 && s2)
 	{
-		c = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1));
+		c = malloc(sizeof(char) * l + 1);
 		if (c == NULL)
 			return (NULL);
 		i = 0;
 		while (i < ft_strlen(s1))
-		{
-			c[i] = s1[i];
-			i++;
-		}
+			i = cpy(c, s1, i);
 		j = 0;
 		while (j < ft_strlen(s2))
 			c[i++] = s2[j++];

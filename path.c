@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:27:12 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 14:06:05 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:55:11 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**get_path(char **env)
 	char	**path2;
 	int		line;
 
-	line = search_env("PATH", env);
+	line = search_env("PATH", env);//if line = -1
 	path = ft_strdup2(env[line]);
 	path2 = ft_split(path, '=');
 	free(path);

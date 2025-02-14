@@ -6,32 +6,11 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:27:55 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 14:01:40 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:32:31 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	print_2c(char **c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (c[i])
-	{
-		j = 0;
-		while (c[i][j])
-		{
-			j++;
-		}
-		write(1, c[i], j);
-		write(1, "\n", 1);
-		i++;
-	}
-	write(1, c[i], j);
-	write(1, "\n", 1);
-}
 
 void	error(int i)
 {
@@ -89,23 +68,36 @@ void	error10(int i, char *c)
 		write(2, "zsh: no such file or directory: ", 32);
 		write(2, c, ft_strlen(c));
 		write(2, "\n", 1);
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
+	}
+}
+
+void	error20(int i, char **cmd)
+{
+	if (i == 100)
+	{
+		write(2, "zsh: no such file or directory: ", 32);
+		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, "\n", 1);
+		free2(cmd);
+		exit(EXIT_SUCCESS);
 	}
 	else if (i == 101)
 	{
 		write(2, "zsh: command not found: ", 24);
-		write(2, c, ft_strlen(c));
+		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, "\n", 1);
+		free2(cmd);
 		exit(EXIT_FAILURE);
 	}
 }
-
+//zsh: permission denied: outfile_na
 void	free2(char **c)
 {
 	int	i;
 
 	i = 0;
-	while(c[i])
+	while (c[i])
 	{
 		free(c[i]);
 		i++;
@@ -113,6 +105,28 @@ void	free2(char **c)
 	free(c);
 }
 /*
+
+void	print_2c(char **c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (c[i])
+	{
+		j = 0;
+		while (c[i][j])
+		{
+			j++;
+		}
+		write(1, c[i], j);
+		write(1, "\n", 1);
+		i++;
+	}
+	write(1, c[i], j);
+	write(1, "\n", 1);
+}
+
 void	read_infile(char **argv)
 {
 	int fd;

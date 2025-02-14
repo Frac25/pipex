@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:50:56 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 18:44:50 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:51:27 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,39 @@ void	exec_cmd(char **cmd, char **all_path, char **env)
 	char	*path;
 
 	i = 0;
-
 	while (all_path[i] != NULL)
 	{
 		path = ft_strjoin3(all_path[i], "/", cmd[0]);
-		if(access(path, R_OK) != -1)
+		if (access(path, R_OK) != -1)
 			break ;
 		i++;
 		free(path);
 		path = NULL;
 	}
-	if	(path == NULL)
+	if (path == NULL)
 	{
-//		free2(cmd);
 		free2(all_path);
-		error10(101, cmd[0]);
+		error20(101, cmd);
 	}
 	if (execve(path, cmd, env) == -1)
 	{
 		free(path);
-//		free2(cmd);
 		free2(all_path);
-		error10(101, cmd[0]);
+		error20(101, cmd);
 	}
 }
 
-int	pipe_j(char **cmd, char **all_path, char **env)
+int	pipe_j(char *arg, char **all_path, char **env)
 {
 	int		pip[2];
 	pid_t	pid;
 	int		stat_loc;
 	int		exit_stat;
+	char	**cmd;
 
+	if (arg[0] == '\0')
+		return (0);
+	cmd = ft_split(arg, ' ');
 	pipe(pip);
 	pid = fork();
 	if (pid == 0)
@@ -61,19 +62,25 @@ int	pipe_j(char **cmd, char **all_path, char **env)
 	dup2(pip[0], 0);
 	close(pip[1]);
 	waitpid(pid, &stat_loc, 0);
+	free2(cmd);
 	exit_stat = 0;
-	if(WIFEXITED(stat_loc))
-	exit_stat = WEXITSTATUS(stat_loc);
-//	printf("exit_stat = %d\n", exit_stat);
-	return(exit_stat);
+	if (WIFEXITED(stat_loc))
+		exit_stat = WEXITSTATUS(stat_loc);
+	return (exit_stat);
 }
 
-int	pipe_last(char **cmd, char **all_path, char **env, int fd_last)
+int	pipe_last(char *arg, char **all_path, char **env, int fd_last)
 {
 	pid_t	pid;
 	int		stat_loc;
 	int		exit_stat;
+	char	**cmd;
 
+	if (arg[0] == '\0')
+		return (0);
+	cmd = ft_split(arg, ' ');
+	if (cmd == NULL)
+		return (0);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -82,54 +89,52 @@ int	pipe_last(char **cmd, char **all_path, char **env, int fd_last)
 	}
 	waitpid(pid, &stat_loc, 0);
 	exit_stat = 0;
-	if(WIFEXITED(stat_loc))
+	free2(cmd);
+	if (WIFEXITED(stat_loc))
 		exit_stat = WEXITSTATUS(stat_loc);
-//	printf("exit_stat = %d\n", exit_stat);
-	return(exit_stat);
+	return (exit_stat);
+}
+
+int	open_infile(char *arg)
+{
+	int	fd;
+
+	printf("access in = %d", access(arg, R_OK));
+	if (access(arg, R_OK) != -1)
+	{
+		fd = open(arg, O_RDONLY);
+	}
+	else
+		error10(100, arg);
+	return (fd);
 }
 
 int	main(int argc, char **argv, char **env)
 {
+	t_pipex	p;
 	int		j;
-	int		fd_first;
-	int		fd_last;
 	char	**all_path;
-	int		sta;
-	char	**split;
 
-	j = 0;
+	j = 2;
 	if (argc < 5)
 		error(10);
-	
 	if (detect_hd(argv) == 1)
 	{
-		fd_first = open("tmp_file.txt", O_RDONLY);
-		j += 1;
+		p.fd_first = open("tmp_file.txt", O_RDONLY);
+		j++;
 	}
 	else
-	{
-		if (access(argv[1], R_OK) != -1)
-			fd_first = open(argv[1], O_RDONLY);
-		else
-			error10(100, argv[1]);
-	}
-//	if (access(argv[argc -1], R_OK) != -1)
-		fd_last = open(argv[argc -1], O_WRONLY | O_TRUNC | O_CREAT , 0777);
-//	else
-//		error10(100, argv[argc -1]);
-	dup2(fd_first, 0);
+		p.fd_first = open_infile(argv[1]);
+//	printf("access last = %d", access(argv[argc -1], R_OK));
+	p.fd_last = open(argv[argc -1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	dup2(p.fd_first, 0);
 	all_path = get_path(env);
-	j += 2;
 	while (j < argc - 2)
-	{
-		split = ft_split(argv[j++], ' ');
-		pipe_j(split, all_path, env);
-		free(split);
-	}
-	sta = 0;
-	split = ft_split(argv[j], ' ');
-	pipe_last(split, all_path, env, fd_last);
-	free(split);
+		pipe_j(argv[j++], all_path, env);
+	p.sta = 0;
+	p.sta = pipe_last(argv[j], all_path, env, p.fd_last);
+	if(access(argv[argc -1], R_OK) == -1)
+		p.sta = 1;
 	free2(all_path);
-	return (sta);
+	return (p.sta);
 }
