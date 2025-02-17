@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:49:08 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/14 15:32:45 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:10:56 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <errno.h>
 
 # include "get_next_line.h"
 # include "ft_printf.h"

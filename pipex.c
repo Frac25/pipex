@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:50:56 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/14 16:51:27 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:06:29 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,24 @@ int	open_infile(char *arg)
 {
 	int	fd;
 
-	printf("access in = %d", access(arg, R_OK));
 	if (access(arg, R_OK) != -1)
-	{
 		fd = open(arg, O_RDONLY);
-	}
 	else
-		error10(100, arg);
+	{
+		dprintf(2, "zsh: %s: %s", strerror(errno), arg);
+		exit(EXIT_SUCCESS);
+	}
+	return (fd);
+}
+
+int	open_outfile(char *arg)
+{
+	int	fd;
+
+//	if (access(arg, W_OK) != -1)
+		fd = open(arg, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	if (access(arg, W_OK) == -1)
+		error10(101, arg);
 	return (fd);
 }
 
@@ -120,13 +131,12 @@ int	main(int argc, char **argv, char **env)
 		error(10);
 	if (detect_hd(argv) == 1)
 	{
-		p.fd_first = open("tmp_file.txt", O_RDONLY);
+		p.fd_first = open("tmp_file.txt", O_RDONLY | O_TRUNC | O_CREAT, 0777);
 		j++;
 	}
 	else
 		p.fd_first = open_infile(argv[1]);
-//	printf("access last = %d", access(argv[argc -1], R_OK));
-	p.fd_last = open(argv[argc -1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	p.fd_last = open_outfile(argv[argc -1]);
 	dup2(p.fd_first, 0);
 	all_path = get_path(env);
 	while (j < argc - 2)

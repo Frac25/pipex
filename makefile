@@ -1,6 +1,8 @@
 NAME = pipex
 
-PROG =	ft_printf\
+PROG =	ft_dprintf\
+		ft_dprintnb\
+		ft_printf\
 		ft_printnb\
 		ft_split\
 		get_next_line_utils\

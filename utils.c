@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:27:55 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/14 16:32:31 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:05:16 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,41 @@ void	error10(int i, char *c)
 {
 	if (i == 100)
 	{
+
 		write(2, "zsh: no such file or directory: ", 32);
 		write(2, c, ft_strlen(c));
 		write(2, "\n", 1);
 		exit(EXIT_SUCCESS);
 	}
+	if (i == 101)
+	{
+		dprintf(2, "zsh: %s: %s", strerror(errno), c);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		ft_printf("erreur de message d ereur");
 }
 
-void	error20(int i, char **cmd)
+void	error20(int i, char **arg)
 {
 	if (i == 100)
 	{
 		write(2, "zsh: no such file or directory: ", 32);
-		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, arg[0], ft_strlen(arg[0]));
 		write(2, "\n", 1);
-		free2(cmd);
+		free2(arg);
 		exit(EXIT_SUCCESS);
 	}
 	else if (i == 101)
 	{
 		write(2, "zsh: command not found: ", 24);
-		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, arg[0], ft_strlen(arg[0]));
 		write(2, "\n", 1);
-		free2(cmd);
+		free2(arg);
 		exit(EXIT_FAILURE);
 	}
+	else
+		ft_printf("erreur de message d ereur");
 }
 //zsh: permission denied: outfile_na
 void	free2(char **c)
