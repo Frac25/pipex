@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:50:56 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/17 12:06:29 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:35:24 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,31 +95,6 @@ int	pipe_last(char *arg, char **all_path, char **env, int fd_last)
 	return (exit_stat);
 }
 
-int	open_infile(char *arg)
-{
-	int	fd;
-
-	if (access(arg, R_OK) != -1)
-		fd = open(arg, O_RDONLY);
-	else
-	{
-		dprintf(2, "zsh: %s: %s", strerror(errno), arg);
-		exit(EXIT_SUCCESS);
-	}
-	return (fd);
-}
-
-int	open_outfile(char *arg)
-{
-	int	fd;
-
-//	if (access(arg, W_OK) != -1)
-		fd = open(arg, O_WRONLY | O_TRUNC | O_CREAT, 0777);
-	if (access(arg, W_OK) == -1)
-		error10(101, arg);
-	return (fd);
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_pipex	p;
@@ -143,7 +118,7 @@ int	main(int argc, char **argv, char **env)
 		pipe_j(argv[j++], all_path, env);
 	p.sta = 0;
 	p.sta = pipe_last(argv[j], all_path, env, p.fd_last);
-	if(access(argv[argc -1], R_OK) == -1)
+	if (access(argv[argc -1], R_OK) == -1)
 		p.sta = 1;
 	free2(all_path);
 	return (p.sta);

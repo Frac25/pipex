@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:49:08 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/17 10:10:56 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:57:42 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <errno.h>
 
 # include "get_next_line.h"
-# include "ft_printf.h"
+# include "ft_dprintf.h"
 
 typedef struct pip
 {
@@ -50,6 +50,7 @@ int		strlen_2(char **str);
 int		ft_same_str(char *s1, char *s2);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
+int		ft_strcmp(const char *s1, const char *s2);
 
 //utils.c
 void	print_2c(char **c);
@@ -63,6 +64,8 @@ void	free2(char **c);
 
 //path.c
 char	**get_path(char **env);
+int		open_infile(char *arg);
+int		open_outfile(char *arg);
 
 //heredoc.c
 int		detect_hd(char **argv);

@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 09:57:28 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/13 10:08:55 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:48:59 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	detect_hd(char **argv)
 		{
 			write(1, ">", 1);
 			line = get_next_line(STDIN_FILENO);
-			if (ft_memcmp(limiter, line, 4) == 0)
+			if (ft_strcmp(limiter, line) == 0)
 				break ;
 			else
 				write(fd, line, ft_strlen(line));

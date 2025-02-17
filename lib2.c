@@ -6,7 +6,7 @@
 /*   By: sydubois <sydubois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:22:17 by sydubois          #+#    #+#             */
-/*   Updated: 2025/02/14 10:19:57 by sydubois         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:56:21 by sydubois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,21 @@ int	cpy(char *c, char const *s1, int i)
 	c[i] = s1[i];
 	i++;
 	return (i);
-}			
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned int	i;
+	unsigned char	*t1;
+	unsigned char	*t2;
+
+	t1 = (unsigned char *)s1;
+	t2 = (unsigned char *)s2;
+	i = 0;
+	while (t1[i] == t2[i] && t1[i] && t2[i])
+		i++;
+	return (t1[i] - t2[i]);
+}
 
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 {
